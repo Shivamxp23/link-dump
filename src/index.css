@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom cursor */
+* {
+  cursor: none !important;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  border: 2px solid transparent;
+  mix-blend-mode: difference;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.custom-cursor.hover {
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 8px;
+  transform: scale(1);
+  mix-blend-mode: difference;
+  transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Metallic button styles */
+.metallic-button {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6, #ced4da);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(200, 200, 200, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 700;
+  text-transform: lowercase;
+  letter-spacing: -0.01em;
+  cursor: none !important;
+}
+
+.metallic-button:hover {
+  background: linear-gradient(135deg, #ffffff, #f8f9fa, #f1f3f4, #e8eaed);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(220, 220, 220, 0.5);
+  transform: translateY(-2px);
+}
+
+.metallic-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(180, 180, 180, 0.4);
+}
+
+/* Metallic input styles */
+.metallic-input {
+  border: 2px solid transparent;
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #c0c0c0, #808080, #c0c0c0, #a0a0a0) border-box;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(192, 192, 192, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: none !important;
+}
+
+.metallic-input:focus {
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #ffffff, #e0e0e0, #ffffff, #d4d4d4) border-box;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    0 0 20px rgba(192, 192, 192, 0.4);
+}
+
+.metallic-input::placeholder {
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Metallic border for cards */
+.metallic-border {
+  border: 2px solid transparent;
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #606060, #404040, #606060, #505050) border-box;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Icon buttons metallic style */
+.metallic-icon-button {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: none !important;
+}
+
+.metallic-icon-button:hover {
+  background: linear-gradient(135deg, #ffffff, #f8f9fa, #f1f3f4);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Typography enhancements */
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+}
+
+p {
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Experimental text effects */
+.experimental-text {
+  background: linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* Ensure links also use custom cursor */
+a {
+  cursor: none !important;
+}
+
+button, input, textarea {
+  cursor: none !important;
+}
