@@ -4,28 +4,35 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState<'viewer' | 'admin'>('viewer');
 
   useEffect(() => {
     const authStatus = localStorage.getItem('arte-auth');
-    if (authStatus === 'true') {
+    const role = localStorage.getItem('arte-role') as 'viewer' | 'admin';
+    if (authStatus === 'true' && role) {
       setIsAuthenticated(true);
+      setUserRole(role);
     }
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (role: 'viewer' | 'admin') => {
     setIsAuthenticated(true);
+    setUserRole(role);
     localStorage.setItem('arte-auth', 'true');
+    localStorage.setItem('arte-role', role);
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    setUserRole('viewer');
     localStorage.removeItem('arte-auth');
+    localStorage.removeItem('arte-role');
   };
 
   return (
     <>
       {isAuthenticated ? (
-        <Dashboard onLogout={handleLogout} />
+        <Dashboard onLogout={handleLogout} userRole={userRole} />
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}

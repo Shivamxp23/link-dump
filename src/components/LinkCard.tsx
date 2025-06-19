@@ -1,21 +1,28 @@
 import React from 'react';
 import { ExternalLink, X } from 'lucide-react';
-import { Link } from './Dashboard';
+import { Link } from '../lib/supabase';
 
 interface LinkCardProps {
   link: Link;
   onDelete: (id: string) => void;
+  canDelete: boolean;
 }
 
-export default function LinkCard({ link, onDelete }: LinkCardProps) {
+export default function LinkCard({ link, onDelete, canDelete }: LinkCardProps) {
   const isYouTubeLink = (url: string) => {
     return url.includes('youtube.com') || url.includes('youtu.be');
   };
 
-  const getYouTubeThumbnail = (url: string) => {
-    const videoIdMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
-    if (videoIdMatch) {
-      return `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`;
+  const getYouTubeThumbnail = (url: string): string | null => {
+    try {
+      const videoIdRegex = /(?:youtube\.com\/(?:.*v=|v\/|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(videoIdRegex);
+      if (match && match[1]) {
+        const videoId = match[1];
+        return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      }
+    } catch {
+      return null;
     }
     return null;
   };
@@ -32,7 +39,11 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
+              if (target.src.includes('maxresdefault')) {
+                target.src = target.src.replace('maxresdefault', 'hqdefault');
+              } else {
+                target.style.display = 'none';
+              }
             }}
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
@@ -40,16 +51,18 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
           </div>
         </div>
       )}
-      
+
       <div className="p-4">
         {!thumbnailUrl && (
           <h3 className="text-white text-sm font-bold mb-2">{link.title}</h3>
         )}
-        
+
         {link.description && (
-          <p className="text-gray-400 text-xs mb-4 line-clamp-3 font-medium">{link.description}</p>
+          <p className="text-gray-400 text-xs mb-4 line-clamp-3 font-medium">
+            {link.description}
+          </p>
         )}
-        
+
         <div className="flex items-center justify-between">
           <a
             href={link.url}
@@ -59,13 +72,15 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
           >
             <ExternalLink className="w-4 h-4" />
           </a>
-          
-          <button
-            onClick={() => onDelete(link.id)}
-            className="metallic-icon-button text-black p-2 rounded-full"
-          >
-            <X className="w-4 h-4" />
-          </button>
+
+          {canDelete && (
+            <button
+              onClick={() => onDelete(link.id)}
+              className="metallic-icon-button text-black p-2 rounded-full"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

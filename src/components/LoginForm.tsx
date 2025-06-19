@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 interface LoginFormProps {
-  onLogin: () => void;
+  onLogin: (role: 'viewer' | 'admin') => void;
 }
 
 export default function LoginForm({ onLogin }: LoginFormProps) {
@@ -21,16 +21,31 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
         cursor.classList.add('hover');
         const button = target.closest('button')!;
         const rect = button.getBoundingClientRect();
-        cursor.style.left = rect.left - 4 + 'px';
-        cursor.style.top = rect.top - 4 + 'px';
-        cursor.style.width = rect.width + 8 + 'px';
-        cursor.style.height = rect.height + 8 + 'px';
+        
+        const isRound = button.classList.contains('rounded-full') || 
+                       (Math.abs(rect.width - rect.height) < 5);
+        
+        if (isRound) {
+          const size = Math.max(rect.width, rect.height) + 8;
+          cursor.style.left = rect.left + rect.width/2 - size/2 + 'px';
+          cursor.style.top = rect.top + rect.height/2 - size/2 + 'px';
+          cursor.style.width = size + 'px';
+          cursor.style.height = size + 'px';
+          cursor.style.borderRadius = '50%';
+        } else {
+          cursor.style.left = rect.left - 4 + 'px';
+          cursor.style.top = rect.top - 4 + 'px';
+          cursor.style.width = rect.width + 8 + 'px';
+          cursor.style.height = rect.height + 8 + 'px';
+          cursor.style.borderRadius = '8px';
+        }
       } else {
         cursor.classList.remove('hover');
         cursor.style.left = e.clientX - 10 + 'px';
         cursor.style.top = e.clientY - 10 + 'px';
         cursor.style.width = '20px';
         cursor.style.height = '20px';
+        cursor.style.borderRadius = '50%';
       }
     };
 
@@ -47,7 +62,10 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === '123') {
-      onLogin();
+      onLogin('viewer');
+      setError('');
+    } else if (password === '456') {
+      onLogin('admin');
       setError('');
     } else {
       setError('invalid password');
@@ -57,11 +75,6 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        <div className="text-center mb-12">
-          <h1 className="experimental-text text-4xl mb-2">arte links</h1>
-          <p className="text-gray-500 text-sm">curated collection</p>
-        </div>
-        
         <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="password"
