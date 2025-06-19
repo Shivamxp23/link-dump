@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, X, Loader2 } from 'lucide-react';
 import LinkCard from './LinkCard';
 import AddLinkModal from './AddLinkModal';
+import EditLinkModal from './EditLinkModal';
 import { supabase, Link } from '../lib/supabase';
 
 interface DashboardProps {
@@ -11,7 +12,9 @@ interface DashboardProps {
 
 export default function Dashboard({ onLogout, userRole }: DashboardProps) {
   const [links, setLinks] = useState<Link[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -113,6 +116,27 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
     }
   };
 
+  const updateLink = async (id: string, linkData: Omit<Link, 'id' | 'created_at' | 'user_id'>) => {
+    try {
+      setError(null);
+      
+      const { data, error } = await supabase
+        .from('links')
+        .update(linkData)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      setLinks(prev => prev.map(link => link.id === id ? data : link));
+    } catch (err) {
+      console.error('Error updating link:', err);
+      setError('Failed to update link. Please try again.');
+      throw err;
+    }
+  };
+
   const deleteLink = async (id: string) => {
     try {
       setError(null);
@@ -129,6 +153,16 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
       console.error('Error deleting link:', err);
       setError('Failed to delete link. Please try again.');
     }
+  };
+
+  const handleEditLink = (link: Link) => {
+    setEditingLink(link);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingLink(null);
   };
 
   if (isLoading) {
@@ -173,7 +207,7 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
             {isAdmin && (
               <>
                 <button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setIsAddModalOpen(true)}
                   className="metallic-button w-20 h-20 text-black rounded-full flex items-center justify-center text-2xl"
                 >
                   <Plus className="w-10 h-10" />
@@ -192,7 +226,9 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
                 key={link.id} 
                 link={link} 
                 onDelete={deleteLink} 
+                onEdit={handleEditLink}
                 canDelete={isAdmin}
+                canEdit={isAdmin}
               />
             ))}
           </div>
@@ -202,19 +238,29 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
       {/* Add Button */}
       {links.length > 0 && isAdmin && (
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsAddModalOpen(true)}
           className="metallic-button fixed bottom-6 right-6 w-16 h-16 text-black rounded-full flex items-center justify-center"
         >
           <Plus className="w-8 h-8" />
         </button>
       )}
 
-      {/* Modal */}
+      {/* Add Modal */}
       {isAdmin && (
         <AddLinkModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
           onAdd={addLink}
+        />
+      )}
+
+      {/* Edit Modal */}
+      {isAdmin && (
+        <EditLinkModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          onUpdate={updateLink}
+          link={editingLink}
         />
       )}
     </div>

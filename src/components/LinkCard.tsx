@@ -1,14 +1,16 @@
 import React from 'react';
-import { ExternalLink, X } from 'lucide-react';
+import { ExternalLink, X, Edit } from 'lucide-react';
 import { Link } from '../lib/supabase';
 
 interface LinkCardProps {
   link: Link;
   onDelete: (id: string) => void;
+  onEdit: (link: Link) => void;
   canDelete: boolean;
+  canEdit: boolean;
 }
 
-export default function LinkCard({ link, onDelete, canDelete }: LinkCardProps) {
+export default function LinkCard({ link, onDelete, onEdit, canDelete, canEdit }: LinkCardProps) {
   const isYouTubeLink = (url: string) => {
     return url.includes('youtube.com') || url.includes('youtu.be');
   };
@@ -73,14 +75,25 @@ export default function LinkCard({ link, onDelete, canDelete }: LinkCardProps) {
             <ExternalLink className="w-4 h-4" />
           </a>
 
-          {canDelete && (
-            <button
-              onClick={() => onDelete(link.id)}
-              className="metallic-icon-button text-black p-2 rounded-full"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
+          <div className="flex gap-2">
+            {canEdit && (
+              <button
+                onClick={() => onEdit(link)}
+                className="metallic-icon-button text-black p-2 rounded-full"
+              >
+                <Edit className="w-4 h-4" />
+              </button>
+            )}
+
+            {canDelete && (
+              <button
+                onClick={() => onDelete(link.id)}
+                className="metallic-icon-button text-black p-2 rounded-full"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
