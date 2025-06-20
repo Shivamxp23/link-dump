@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
+import YouTubeThumbnailExtractor from "./components/YouTubeThumbnailExtractor";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
