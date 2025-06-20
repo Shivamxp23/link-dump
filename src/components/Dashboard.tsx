@@ -179,8 +179,8 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="border-b border-gray-900 p-6">
-        <div className="flex items-center justify-between">
+      <div className="border-b border-gray-900 p-6 relative">
+        <div className="flex items-center justify-between w-full relative">
           <h1 className="experimental-text text-2xl">links</h1>
           <button
             onClick={onLogout}
@@ -188,6 +188,20 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
           >
             <X className="w-5 h-5" />
           </button>
+          <span
+            className="block text-xs text-gray-400 font-medium"
+            style={{
+              letterSpacing: '0.05em',
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+            }}
+          >
+            ungatekeeping <span className="glitch-text" data-text="shit">shit</span> worth sharing
+          </span>
         </div>
       </div>
 

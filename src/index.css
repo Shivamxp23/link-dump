@@ -163,3 +163,49 @@ a {
 button, input, textarea {
   cursor: none !important;
 }
+
+.glitch-text {
+  position: relative;
+  color: #ccc;
+  animation: glitch-anim 3s steps(1, end) infinite;
+}
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0.7;
+  pointer-events: none;
+}
+.glitch-text::before {
+  animation: glitch-anim-before 3s steps(1, end) infinite;
+  color: #f7e017; /* yellow */
+  z-index: 2;
+}
+.glitch-text::after {
+  animation: glitch-anim-after 3s steps(1, end) infinite;
+  color: #a259f7; /* purple */
+  z-index: 1;
+}
+
+@keyframes glitch-anim {
+  0%, 83.33% { text-shadow: none; }
+  83.34%, 87% { text-shadow: 3px 0 #f7e017, -3px 0 #a259f7, 4px 0 #1faaff, -4px 0 #ff3b3b; }
+  87.01%, 90% { text-shadow: -3px 0 #f7e017, 3px 0 #a259f7, -4px 0 #1faaff, 4px 0 #ff3b3b; }
+  90.01%, 93% { text-shadow: 2px 0 #f7e017, -2px 0 #a259f7, 3px 0 #1faaff, -3px 0 #ff3b3b; }
+  93.01%, 100% { text-shadow: -2px 0 #f7e017, 2px 0 #a259f7, -3px 0 #1faaff, 3px 0 #ff3b3b; }
+}
+@keyframes glitch-anim-before {
+  0%, 83.33% { left: 0; opacity: 0; }
+  83.34%, 87% { left: 3px; opacity: 0.7; }
+  87.01%, 90% { left: -3px; opacity: 0.7; }
+  90.01%, 93% { left: 2px; opacity: 0.7; }
+  93.01%, 100% { left: -2px; opacity: 0.7; }
+}
+@keyframes glitch-anim-after {
+  0%, 83.33% { left: 0; opacity: 0; }
+  83.34%, 87% { left: -3px; opacity: 0.7; }
+  87.01%, 90% { left: 3px; opacity: 0.7; }
+  90.01%, 93% { left: -2px; opacity: 0.7; }
+  93.01%, 100% { left: 2px; opacity: 0.7; }
+}
