@@ -32,6 +32,9 @@ function App() {
 
   return (
     <>
+      {/* Background Video */}
+      {/* The video tag has been moved to index.html for global background */}
+      {/* App Content */}
       {isAuthenticated ? (
         <Dashboard onLogout={handleLogout} userRole={userRole} />
       ) : (

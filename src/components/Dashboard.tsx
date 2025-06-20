@@ -167,7 +167,7 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-black/50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 text-white animate-spin mx-auto mb-4" />
           <p className="text-gray-400">loading your links...</p>
@@ -177,7 +177,7 @@ export default function Dashboard({ onLogout, userRole }: DashboardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black/50">
       {/* Header */}
       <div className="border-b border-gray-900 p-6 relative">
         <div className="flex items-center justify-between w-full relative">

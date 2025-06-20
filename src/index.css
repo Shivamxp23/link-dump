@@ -9,6 +9,12 @@
   cursor: none !important;
 }
 
+html, body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -208,4 +214,22 @@ button, input, textarea {
   87.01%, 90% { left: 3px; opacity: 0.7; }
   90.01%, 93% { left: -2px; opacity: 0.7; }
   93.01%, 100% { left: 2px; opacity: 0.7; }
+}
+
+/* Background video should always be behind all content */
+body, #root {
+  min-height: 100vh;
+  height: 100%;
+  position: relative;
+}
+
+video.fixed.top-0.left-0.w-full.h-full.object-cover.-z-10 {
+  z-index: -10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  pointer-events: none;
 }
