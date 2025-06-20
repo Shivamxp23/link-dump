@@ -13,6 +13,13 @@ html, body {
   background-color: transparent;
   margin: 0;
   padding: 0;
+  overflow-y: scroll; /* Ensure scrolling is still possible */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
