@@ -64,7 +64,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
     if (password === '123') {
       onLogin('viewer');
       setError('');
-    } else if (password === '456') {
+    } else if (password === 'Shiv@m?132003') {
       onLogin('admin');
       setError('');
     } else {
